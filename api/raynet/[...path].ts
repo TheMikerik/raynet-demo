@@ -21,8 +21,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return
   }
 
-  const { path, ...queryParams } = req.query
-  const pathSegments = Array.isArray(path) ? path : [path].filter(Boolean)
+  // vercel dev's local emulation delivers the catch-all segment as `...path`, while
+  // production Vercel delivers it as `path` — accept either.
+  const { path, '...path': dotsPath, ...queryParams } = req.query
+  const rawPath = path ?? dotsPath
+  const pathSegments = Array.isArray(rawPath) ? rawPath : [rawPath].filter(Boolean)
 
   const search = new URLSearchParams()
   for (const [key, value] of Object.entries(queryParams)) {
