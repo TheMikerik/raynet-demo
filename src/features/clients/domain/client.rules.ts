@@ -22,6 +22,33 @@ export function translateState(state: string): string {
   return STATE_LABELS[state] ?? state
 }
 
+export type StateColor = 'gray' | 'gold' | 'green' | 'red'
+
+const STATE_COLORS: Record<string, StateColor> = {
+  A_POTENTIAL: 'gold',
+  B_ACTUAL: 'green',
+  C_DEFERRED: 'gray',
+  D_UNATTRACTIVE: 'red',
+}
+
+export function stateColor(state: string): StateColor {
+  return STATE_COLORS[state] ?? 'gray'
+}
+
+export type CategoryColor = 'yellow' | 'green' | 'blue' | 'red'
+
+function stripDiacritics(text: string): string {
+  return text.normalize('NFD').replace(/[̀-ͯ]/g, '')
+}
+
+export function categoryColor(categoryLabel: string): CategoryColor {
+  const normalized = stripDiacritics(categoryLabel).toLowerCase()
+  if (normalized.includes('zlut')) return 'yellow'
+  if (normalized.includes('zelen')) return 'green'
+  if (normalized.includes('modr')) return 'blue'
+  return 'red'
+}
+
 export function buildMapUrl(address: ClientAddress | null): string | null {
   if (!address) return null
 

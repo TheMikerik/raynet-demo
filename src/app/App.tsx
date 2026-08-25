@@ -1,13 +1,10 @@
 import { AppProviders } from './providers'
-import { ClientTable } from '../features/clients/presentation/components/ClientTable'
+import { ClientsScreen } from '../features/clients/presentation/components/ClientsScreen'
 
 export function App() {
   return (
     <AppProviders>
-      <main>
-        <h1>Raynet — Master-Detail klientů</h1>
-        <ClientTable />
-      </main>
+      <ClientsScreen />
     </AppProviders>
   )
 }
