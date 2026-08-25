@@ -1,0 +1,288 @@
+.tableWrapper {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background-color: #f2f4f6;
+  padding-left: 35px;
+  padding-right: 12px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.table {
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0 4px;
+  font-size: 16px;
+  color: #26313d;
+}
+
+.headerCell {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  overflow: hidden;
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 600;
+  color: #6b7684;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  background-color: #f2f4f6;
+}
+
+.headerCell button {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+
+.resizer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 6px;
+  cursor: col-resize;
+  user-select: none;
+  touch-action: none;
+}
+
+.resizer:hover,
+.resizer:focus-visible {
+  background-color: #999;
+}
+
+.row {
+  background-color: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 8px;
+  transition: background-color 150ms ease-out;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.row td {
+  height: 44px;
+  padding: 4px 14px;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #778093;
+  /* text-align: center; */
+}
+
+.row td strong {
+  color: #26313d;
+  font-weight: 700;
+}
+
+.alignCenter {
+  text-align: center;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #4e8905;
+  cursor: pointer;
+}
+
+.row td:first-child {
+  border-radius: 8px 0 0 8px;
+}
+
+.row td:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+.row:hover {
+  background-color: #e6f2ff;
+  border-color: #bbd9ff;
+}
+
+.selected {
+  background-color: #e0fcd4;
+  border-color: #99dd99;
+}
+
+.selected:hover {
+  background-color: #b3e6b3;
+  border-color: #80cc80;
+}
+
+.badge {
+  display: inline-block;
+  max-width: 100%;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.8em;
+  font-weight: 600;
+  line-height: 1.6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  text-align: left;
+}
+
+.state-gray {
+  color: #778093;
+}
+
+.state-gold {
+  color: #c29500;
+}
+
+.state-green {
+  color: #76b92b;
+}
+
+.state-red {
+  color: #f47559;
+}
+
+.badge-green {
+  background-color: #d1e395;
+  color: #546200;
+}
+
+.badge-red {
+  background-color: #fdc6d0;
+  color: #ad2250;
+}
+
+.badge-yellow {
+  background-color: #f5eb9c;
+  color: #665d01;
+}
+
+.badge-blue {
+  background-color: #cde1ff;
+  color: #2d5c9a;
+}
+
+.owner {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #f2f4f6;
+  color: rgb(24, 23, 28);
+}
+
+.rowAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #8a94a6;
+  cursor: pointer;
+}
+
+.rowAction:hover {
+  background-color: #e1e4e8;
+  color: #26313d;
+}
+
+.stateCell {
+  padding: 56px 20px;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  text-align: center;
+}
+
+.skeletonBar,
+.skeletonBox,
+.skeletonCircle,
+.skeletonPill {
+  background: linear-gradient(90deg, #edeff1 25%, #e2e5e8 37%, #edeff1 63%);
+  background-size: 400% 100%;
+  animation: skeletonShimmer 1.4s ease infinite;
+}
+
+.skeletonBar {
+  display: inline-block;
+  width: 70%;
+  height: 14px;
+  border-radius: 4px;
+}
+
+.skeletonBox {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+}
+
+.skeletonCircle {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+.skeletonPill {
+  display: inline-block;
+  width: 64px;
+  height: 20px;
+  border-radius: 999px;
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  padding: 14px 47px;
+  border-top: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.footerItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footerLabel {
+  color: #757575;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}

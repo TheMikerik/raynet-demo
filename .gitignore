@@ -16,3 +16,5 @@ dist/
 .husky/_/
 .vercel
 .env*
+
+.claude
