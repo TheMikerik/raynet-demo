@@ -1,0 +1,12 @@
+# Tmp
+/tmp
+
+# local env files
+**.env
+**.env.local
+**.env.*.local
+
+# dependencies / build output
+node_modules/
+dist/
+.vercel/
