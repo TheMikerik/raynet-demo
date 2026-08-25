@@ -1,18 +1,8 @@
+import { RaynetApiError, RaynetNetworkError } from './errors'
+
 const RAYNET_PROXY_BASE_PATH = '/api/raynet'
 
 export type RaynetQueryParams = Record<string, string | number | undefined>
-
-export class RaynetApiError extends Error {
-  readonly status: number
-  readonly body: string
-
-  constructor(status: number, statusText: string, body: string) {
-    super(`Raynet API request failed: ${status} ${statusText}`)
-    this.name = 'RaynetApiError'
-    this.status = status
-    this.body = body
-  }
-}
 
 function buildUrl(path: string, params?: RaynetQueryParams): string {
   const search = new URLSearchParams()
@@ -26,10 +16,15 @@ function buildUrl(path: string, params?: RaynetQueryParams): string {
 }
 
 export async function raynetGet<T>(path: string, params?: RaynetQueryParams): Promise<T> {
-  const response = await fetch(buildUrl(path, params), {
-    method: 'GET',
-    headers: { Accept: 'application/json' },
-  })
+  let response: Response
+  try {
+    response = await fetch(buildUrl(path, params), {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+    })
+  } catch (cause) {
+    throw new RaynetNetworkError(cause)
+  }
 
   if (!response.ok) {
     throw new RaynetApiError(response.status, response.statusText, await response.text())
