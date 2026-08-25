@@ -9,8 +9,6 @@ import {
 } from '@tanstack/react-table'
 import type { ColumnDef, RowSelectionState, SortingState } from '@tanstack/react-table'
 import { MoreHorizontal, Pencil, User } from 'lucide-react'
-import { useClients } from '../hooks/useClients'
-import { AsyncValueWidget } from '../../../../shared/components/AsyncValueWidget'
 import type { ClientListItem } from '../../domain/client.types'
 import { categoryColor, stateColor } from '../../domain/client.rules'
 import styles from './ClientTable.module.css'
@@ -120,17 +118,17 @@ const columns: ColumnDef<ClientListItem, string>[] = [
 
 const initialColumnOrder = columns.map((column) => column.id as string)
 
-const PAGE_SIZE_OPTIONS = [10, 20, 50, 100, 200]
+interface ClientTableProps {
+  data: ClientListItem[]
+}
 
-export function ClientTable() {
-  const [pageSize, setPageSize] = useState(50)
-  const clientsQuery = useClients('', pageSize)
+export function ClientTable({ data }: ClientTableProps) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const [columnOrder, setColumnOrder] = useState<string[]>(initialColumnOrder)
 
   const table = useReactTable({
-    data: clientsQuery.data?.items ?? [],
+    data,
     columns,
     state: { sorting, rowSelection, columnOrder },
     onSortingChange: setSorting,
@@ -165,88 +163,62 @@ export function ClientTable() {
   }
 
   return (
-    <AsyncValueWidget query={clientsQuery}>
-      {(data) => (
-        <>
-          <div className={styles.tableWrapper}>
-            <table className={styles.table} style={{ width: table.getTotalSize() }}>
-              <thead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <th
-                        key={header.id}
-                        className={styles.headerCell}
-                        style={{ width: header.getSize() }}
-                        draggable={header.column.id !== 'select'}
-                        onDragStart={handleHeaderDragStart(header.column.id)}
-                        onDragOver={(event) => event.preventDefault()}
-                        onDrop={handleHeaderDrop(header.column.id)}
-                      >
-                        {header.column.getCanSort() ? (
-                          <button type="button" onClick={header.column.getToggleSortingHandler()}>
-                            {flexRender(header.column.columnDef.header, header.getContext())}
-                            {{ asc: ' ▲', desc: ' ▼' }[header.column.getIsSorted() as string] ?? ''}
-                          </button>
-                        ) : (
-                          flexRender(header.column.columnDef.header, header.getContext())
-                        )}
-                        {header.column.getCanResize() && (
-                          // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
-                          <div
-                            role="separator"
-                            aria-orientation="vertical"
-                            aria-label={`Změnit šířku sloupce ${String(header.column.columnDef.header)}`}
-                            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-                            tabIndex={0}
-                            className={styles.resizer}
-                            onMouseDown={header.getResizeHandler()}
-                            onTouchStart={header.getResizeHandler()}
-                          />
-                        )}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody>
-                {table.getRowModel().rows.map((row) => (
-                  <tr
-                    key={row.id}
-                    className={
-                      row.getIsSelected() ? `${styles.row} ${styles.selected}` : styles.row
-                    }
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id} style={{ width: cell.column.getSize() }}>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className={styles.footer}>
-            <span className={styles.footerItem}>
-              <span className={styles.footerLabel}>Počet</span> <strong>{data.totalCount}</strong>
-            </span>
-            <label className={styles.footerItem}>
-              <span className={styles.footerLabel}>Na stránce</span>
-              <select
-                value={pageSize}
-                onChange={(event) => setPageSize(Number(event.target.value))}
-              >
-                {PAGE_SIZE_OPTIONS.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-        </>
-      )}
-    </AsyncValueWidget>
+    <div className={styles.tableWrapper}>
+      <table className={styles.table} style={{ width: table.getTotalSize() }}>
+        <thead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th
+                  key={header.id}
+                  className={styles.headerCell}
+                  style={{ width: header.getSize() }}
+                  draggable={header.column.id !== 'select'}
+                  onDragStart={handleHeaderDragStart(header.column.id)}
+                  onDragOver={(event) => event.preventDefault()}
+                  onDrop={handleHeaderDrop(header.column.id)}
+                >
+                  {header.column.getCanSort() ? (
+                    <button type="button" onClick={header.column.getToggleSortingHandler()}>
+                      {flexRender(header.column.columnDef.header, header.getContext())}
+                      {{ asc: ' ▲', desc: ' ▼' }[header.column.getIsSorted() as string] ?? ''}
+                    </button>
+                  ) : (
+                    flexRender(header.column.columnDef.header, header.getContext())
+                  )}
+                  {header.column.getCanResize() && (
+                    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+                    <div
+                      role="separator"
+                      aria-orientation="vertical"
+                      aria-label={`Změnit šířku sloupce ${String(header.column.columnDef.header)}`}
+                      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+                      tabIndex={0}
+                      className={styles.resizer}
+                      onMouseDown={header.getResizeHandler()}
+                      onTouchStart={header.getResizeHandler()}
+                    />
+                  )}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {table.getRowModel().rows.map((row) => (
+            <tr
+              key={row.id}
+              className={row.getIsSelected() ? `${styles.row} ${styles.selected}` : styles.row}
+            >
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id} style={{ width: cell.column.getSize() }}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   )
 }
