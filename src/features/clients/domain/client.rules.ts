@@ -10,7 +10,7 @@ const ROLE_LABELS: Record<string, string> = {
 const STATE_LABELS: Record<string, string> = {
   A_POTENTIAL: 'Potenciální',
   B_ACTUAL: 'Aktuální',
-  C_DEFERRED: 'Odložný',
+  C_DEFERRED: 'Odložený',
   D_UNATTRACTIVE: 'Nezajímavý',
 }
 
@@ -37,15 +37,11 @@ export function stateColor(state: string): StateColor {
 
 export type CategoryColor = 'yellow' | 'green' | 'blue' | 'red'
 
-function stripDiacritics(text: string): string {
-  return text.normalize('NFD').replace(/[̀-ͯ]/g, '')
-}
-
 export function categoryColor(categoryLabel: string): CategoryColor {
-  const normalized = stripDiacritics(categoryLabel).toLowerCase()
-  if (normalized.includes('zlut')) return 'yellow'
-  if (normalized.includes('zelen')) return 'green'
-  if (normalized.includes('modr')) return 'blue'
+  const normalized = categoryLabel.toLowerCase()
+  if (normalized.includes('rcp')) return 'yellow'
+  if (normalized.includes('mvp')) return 'green'
+  if (normalized.includes('mvvm')) return 'blue'
   return 'red'
 }
 
