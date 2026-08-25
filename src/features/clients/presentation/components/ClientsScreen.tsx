@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react'
 import { AppSidebar } from '../../../../shared/components/AppSidebar'
-import { AsyncValueWidget } from '../../../../shared/components/AsyncValueWidget'
+import { getRaynetErrorInfo } from '../../../../services/raynet/errors'
 import { useClients } from '../hooks/useClients'
 import type { GetClientsResult } from '../../data/client.repository'
-import { ClientTable } from './ClientTable'
-import { ClientTablePagination } from './ClientTablePagination'
+import { ClientTable } from './table/ClientTable'
+import { ClientTablePagination } from './table/ClientTablePagination'
 import { DevApiStateToggle } from './DevApiStateToggle'
 import type { DevApiState } from './DevApiStateToggle'
 import styles from './ClientsScreen.module.css'
@@ -33,23 +33,34 @@ export function ClientsScreen() {
     }
   }, [devApiState, clientsQuery])
 
+  const errorMessage = displayedQuery.error
+    ? getRaynetErrorInfo(displayedQuery.error).message
+    : null
+
+  function handleRetry() {
+    if (devApiState !== 'real') {
+      setDevApiState('real')
+      return
+    }
+    void clientsQuery.refetch()
+  }
+
   return (
     <div className={styles.screen}>
       <AppSidebar />
       <main className={styles.content}>
         <h1>Raynet — Master-Detail klientů</h1>
-        <AsyncValueWidget query={displayedQuery}>
-          {(data) => (
-            <>
-              <ClientTable data={data.items} />
-              <ClientTablePagination
-                totalCount={data.totalCount}
-                pageSize={pageSize}
-                onPageSizeChange={setPageSize}
-              />
-            </>
-          )}
-        </AsyncValueWidget>
+        <ClientTable
+          data={displayedQuery.data?.items ?? []}
+          isLoading={displayedQuery.isLoading}
+          errorMessage={errorMessage}
+          onRetry={errorMessage ? handleRetry : undefined}
+        />
+        <ClientTablePagination
+          totalCount={displayedQuery.data?.totalCount ?? 0}
+          pageSize={pageSize}
+          onPageSizeChange={setPageSize}
+        />
         <DevApiStateToggle value={devApiState} onChange={setDevApiState} />
       </main>
     </div>
