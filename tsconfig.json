@@ -1,12 +1,8 @@
 {
-  "compilerOptions": {
-    "target": "ES2020",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "esModuleInterop": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "types": ["node"]
-  },
-  "include": ["api"]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" },
+    { "path": "./tsconfig.api.json" }
+  ]
 }
