@@ -87,7 +87,10 @@ describe('ClientsScreen', () => {
 
     await waitFor(
       () => {
-        expect(getClients).toHaveBeenCalledWith(expect.objectContaining({ fulltext: 'acme' }))
+        expect(getClients).toHaveBeenCalledWith(
+          expect.objectContaining({ fulltext: 'acme' }),
+          expect.any(AbortSignal),
+        )
       },
       { timeout: 2000 },
     )
@@ -109,7 +112,7 @@ describe('ClientsScreen', () => {
 
     await user.click(row as HTMLElement)
 
-    await waitFor(() => expect(getClientDetail).toHaveBeenCalledWith(1))
+    await waitFor(() => expect(getClientDetail).toHaveBeenCalledWith(1, expect.any(AbortSignal)))
     expect(await screen.findByText('VIP klient')).toBeInTheDocument()
   })
 

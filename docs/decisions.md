@@ -44,8 +44,16 @@ propojuje až do `fetch()`, takže se zrušený request fyzicky zavře. Chyba `A
 přehodit beze změny jinak by ji TanStack Query nerozpoznalo jako
 zrušení a ukázalo by uživateli falešný error stav.
 
+## CI/CD, testy a práce s GitHub issues
+
+Appka má od raných commitů zapojené GitHub Actions, psané testy a práci přes issues/PR místo přímých commitů do `main`. Pro rozsah appky by
+šlo dodat i bez tohohle, ale chtěl jsem tím ukázat, že vím, jak se
+verzuje a dodává kód v týmu, ne jen jak se napíše feature. CI a testy jsou ve větších projektech
+must-have, ne nice-to-have, a totéž platí pro řízení práce přes issues.
+
 ## Známé mezery (vědomě otevřené)
 
 - **Deep-linking přes URL** — výběr klienta a search query žijí jen v `useState`, ne v routeru.
   Refresh nebo sdílený odkaz teď stav neuchová.
 - **Stránkování** — `ClientTablePagination` mění jen velikost stránky, ne posun na další stránku.
+- **Responzivita** - Nepřidal jsem responzivitu pro mobilní telefony a atypické displaye. K úkolu jsem přistupoval spíše jako k ukázce toho, jak uvažuji nad kódem a architekturou a ne aby UI bylo doladěné do nejmenších možných detailů.

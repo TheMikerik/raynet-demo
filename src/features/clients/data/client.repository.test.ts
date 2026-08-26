@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { makeRaynetCompany, makeRaynetCompanyDetail } from '../../../test/factories'
 
 const raynetGet = vi.fn()
@@ -7,6 +7,10 @@ vi.mock('../../../services/raynet/client', () => ({
 }))
 
 const { getClientDetail, getClients } = await import('./client.repository')
+
+afterEach(() => {
+  vi.clearAllMocks()
+})
 
 describe('getClients', () => {
   it('maps the response items and total count', async () => {
@@ -29,13 +33,17 @@ describe('getClients', () => {
 
     await getClients({ fulltext: 'acme', limit: 10, offset: 20 })
 
-    expect(raynetGet).toHaveBeenCalledWith('company', {
-      fulltext: 'acme',
-      limit: 10,
-      offset: 20,
-      sortColumn: undefined,
-      sortDirection: undefined,
-    })
+    expect(raynetGet).toHaveBeenCalledWith(
+      'company',
+      {
+        fulltext: 'acme',
+        limit: 10,
+        offset: 20,
+        sortColumn: undefined,
+        sortDirection: undefined,
+      },
+      undefined,
+    )
   })
 })
 
@@ -45,7 +53,7 @@ describe('getClientDetail', () => {
 
     const result = await getClientDetail(42)
 
-    expect(raynetGet).toHaveBeenCalledWith('company/42')
+    expect(raynetGet).toHaveBeenCalledWith('company/42', undefined, undefined)
     expect(result.id).toBe(42)
     expect(result.displayName).toBe('Acme')
   })
