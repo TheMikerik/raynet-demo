@@ -18,7 +18,7 @@ export function AppSidebar() {
     <nav className={styles.sidebar} aria-label="Hlavní navigace">
       {ICONS.map((Icon, index) => (
         <button key={index} type="button" className={styles.iconButton}>
-          <Icon size={20} />
+          <Icon size={24} />
         </button>
       ))}
     </nav>
