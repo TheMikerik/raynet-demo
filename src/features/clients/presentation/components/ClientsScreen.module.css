@@ -28,3 +28,16 @@
   font-weight: 700;
   color: #1c2b39;
 }
+
+.body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.master {
+  display: flex;
+  flex: 0 1 auto;
+  min-width: 0;
+  min-height: 0;
+}

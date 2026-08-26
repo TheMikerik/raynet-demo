@@ -19,9 +19,18 @@ interface ClientTableProps {
   isLoading?: boolean
   errorMessage?: string | null
   onRetry?: () => void
+  activeId?: number | null
+  onRowClick?: (id: number) => void
 }
 
-export function ClientTable({ data, isLoading, errorMessage, onRetry }: ClientTableProps) {
+export function ClientTable({
+  data,
+  isLoading,
+  errorMessage,
+  onRetry,
+  activeId,
+  onRowClick,
+}: ClientTableProps) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const { columnOrder, setColumnOrder, handleHeaderDragStart, handleHeaderDrop } = useColumnOrder(
@@ -115,18 +124,31 @@ export function ClientTable({ data, isLoading, errorMessage, onRetry }: ClientTa
               </td>
             </tr>
           ) : (
-            table.getRowModel().rows.map((row) => (
-              <tr
-                key={row.id}
-                className={row.getIsSelected() ? `${styles.row} ${styles.selected}` : styles.row}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} style={{ width: cell.column.getSize() }}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))
+            table.getRowModel().rows.map((row) => {
+              const isActive = row.original.id === activeId
+              const rowClassName = [
+                styles.row,
+                row.getIsSelected() ? styles.selected : '',
+                isActive ? styles.active : '',
+              ]
+                .filter(Boolean)
+                .join(' ')
+
+              return (
+                <tr
+                  key={row.id}
+                  className={rowClassName}
+                  onClick={onRowClick ? () => onRowClick(row.original.id) : undefined}
+                  style={onRowClick ? { cursor: 'pointer' } : undefined}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} style={{ width: cell.column.getSize() }}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              )
+            })
           )}
         </tbody>
       </table>

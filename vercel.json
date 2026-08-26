@@ -1,0 +1,3 @@
+{
+  "rewrites": [{ "source": "/api/raynet/:path*", "destination": "/api/raynet/[...path]" }]
+}

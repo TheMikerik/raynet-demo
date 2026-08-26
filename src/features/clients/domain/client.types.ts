@@ -25,4 +25,5 @@ export interface ClientDetail extends ClientListItem {
   address: ClientAddress | null
   mapUrl: string | null
   notice: string | null
+  tags: string[]
 }

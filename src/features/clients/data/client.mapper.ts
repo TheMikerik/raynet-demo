@@ -46,5 +46,6 @@ export function mapCompanyToDetail(company: RaynetCompanyDetail): ClientDetail {
     address,
     mapUrl: buildMapUrl(address),
     notice: company.notice,
+    tags: company.tags,
   }
 }
