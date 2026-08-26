@@ -6,6 +6,6 @@ export function useClients(searchQuery: string, limit?: number) {
 
   return useQuery({
     queryKey: ['clients', { fulltext, limit }],
-    queryFn: () => getClients({ fulltext, limit }),
+    queryFn: ({ signal }) => getClients({ fulltext, limit }, signal),
   })
 }

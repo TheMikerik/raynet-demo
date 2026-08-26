@@ -15,14 +15,20 @@ function buildUrl(path: string, params?: RaynetQueryParams): string {
   return `${RAYNET_PROXY_BASE_PATH}/${path}${query ? `?${query}` : ''}`
 }
 
-export async function raynetGet<T>(path: string, params?: RaynetQueryParams): Promise<T> {
+export async function raynetGet<T>(
+  path: string,
+  params?: RaynetQueryParams,
+  signal?: AbortSignal,
+): Promise<T> {
   let response: Response
   try {
     response = await fetch(buildUrl(path, params), {
       method: 'GET',
       headers: { Accept: 'application/json' },
+      signal,
     })
   } catch (cause) {
+    if (cause instanceof DOMException && cause.name === 'AbortError') throw cause
     throw new RaynetNetworkError(cause)
   }
 

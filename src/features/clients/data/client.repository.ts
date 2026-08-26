@@ -10,14 +10,21 @@ export interface GetClientsResult {
   totalCount: number
 }
 
-export async function getClients(params: RaynetCompanyListParams = {}): Promise<GetClientsResult> {
-  const response = await raynetGet<RaynetCompanyListResponse>('company', {
-    fulltext: params.fulltext,
-    limit: params.limit,
-    offset: params.offset,
-    sortColumn: params.sortColumn,
-    sortDirection: params.sortDirection,
-  })
+export async function getClients(
+  params: RaynetCompanyListParams = {},
+  signal?: AbortSignal,
+): Promise<GetClientsResult> {
+  const response = await raynetGet<RaynetCompanyListResponse>(
+    'company',
+    {
+      fulltext: params.fulltext,
+      limit: params.limit,
+      offset: params.offset,
+      sortColumn: params.sortColumn,
+      sortDirection: params.sortDirection,
+    },
+    signal,
+  )
 
   return {
     items: response.data.map(mapCompanyToListItem),
@@ -25,7 +32,7 @@ export async function getClients(params: RaynetCompanyListParams = {}): Promise<
   }
 }
 
-export async function getClientDetail(id: number): Promise<ClientDetail> {
-  const response = await raynetGet<RaynetCompanyDetailResponse>(`company/${id}`)
+export async function getClientDetail(id: number, signal?: AbortSignal): Promise<ClientDetail> {
+  const response = await raynetGet<RaynetCompanyDetailResponse>(`company/${id}`, undefined, signal)
   return mapCompanyToDetail(response.data)
 }
