@@ -3,6 +3,7 @@ import { Building2, Hash, MapPin, User, XCircle } from 'lucide-react'
 import { AlertPanel } from '../../../../../shared/components/AlertPanel'
 import { getRaynetErrorInfo } from '../../../../../services/raynet/errors'
 import { useClientDetail } from '../../hooks/useClientDetail'
+import { ClientDetailSkeletonCard } from './ClientDetailSkeletonCard'
 import { categoryColor, stateColor } from '../../../domain/client.rules'
 import styles from './ClientDetailPanel.module.css'
 
@@ -26,46 +27,25 @@ export function ClientDetailPanel({ clientId }: ClientDetailPanelProps) {
     )
   }
 
-  if (isLoading) {
+  if (isLoading || error) {
     return (
       <aside className={styles.panel}>
-        <div className={styles.card}>
-          <div className={styles.header}>
-            <div className={styles.skeletonLogo} />
-            <div className={styles.headerText}>
-              <div className={`${styles.skeletonBar} ${styles.skeletonTitle}`} />
-              <div className={`${styles.skeletonBar} ${styles.skeletonPill}`} />
+        <div className={styles.detailSkeletonWrapper}>
+          <ClientDetailSkeletonCard />
+          {error && (
+            <div className={styles.stateOverlay}>
+              <AlertPanel
+                icon={XCircle}
+                iconColor="#e5484d"
+                iconBackground="#fdeceb"
+                title="Nepodařilo se načíst detail"
+                message={getRaynetErrorInfo(error).message}
+                actionLabel="Zkusit znovu"
+                onAction={() => void refetch()}
+              />
             </div>
-          </div>
-          <div className={styles.divider} />
-          <div className={styles.infoCol}>
-            {[0, 1, 2].map((row) => (
-              <div key={row} className={styles.infoRow}>
-                <div className={styles.skeletonIcon} />
-                <div className={styles.infoRowBody}>
-                  <div className={`${styles.skeletonBar} ${styles.skeletonLabel}`} />
-                  <div className={`${styles.skeletonBar} ${styles.skeletonValue}`} />
-                </div>
-              </div>
-            ))}
-          </div>
+          )}
         </div>
-      </aside>
-    )
-  }
-
-  if (error) {
-    return (
-      <aside className={styles.panel}>
-        <AlertPanel
-          icon={XCircle}
-          iconColor="#e5484d"
-          iconBackground="#fdeceb"
-          title="Nepodařilo se načíst detail"
-          message={getRaynetErrorInfo(error).message}
-          actionLabel="Zkusit znovu"
-          onAction={() => void refetch()}
-        />
       </aside>
     )
   }

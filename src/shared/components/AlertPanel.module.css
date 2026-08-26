@@ -26,6 +26,7 @@
   font-size: 20px;
   font-weight: 700;
   color: #26313d;
+  text-align: center;
 }
 
 .message {
@@ -34,6 +35,7 @@
   font-weight: 400;
   line-height: 1.5;
   color: #778093;
+  text-align: center;
 }
 
 .actionButton {

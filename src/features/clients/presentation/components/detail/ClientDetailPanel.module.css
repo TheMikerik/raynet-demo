@@ -12,6 +12,25 @@
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
 }
 
+.detailSkeletonWrapper {
+  position: relative;
+}
+
+.stateOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+.stateOverlay > * {
+  width: min(420px, 100%);
+  height: fit-content;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  border-radius: 12px;
+}
+
 .emptyState {
   display: flex;
   flex-direction: column;
@@ -192,6 +211,7 @@
 }
 
 .infoRowBody {
+  flex: 1;
   min-width: 0;
 }
 
@@ -282,7 +302,8 @@
 
 .skeletonBar,
 .skeletonLogo,
-.skeletonIcon {
+.skeletonIcon,
+.skeletonBadge {
   background: linear-gradient(90deg, #edeff1 25%, #e2e5e8 37%, #edeff1 63%);
   background-size: 400% 100%;
   animation: skeletonShimmer 1.4s ease infinite;
@@ -302,6 +323,21 @@
   width: 45%;
   height: 20px;
   border-radius: 999px;
+}
+
+.skeletonBadge {
+  display: inline-block;
+  height: 20px;
+  border-radius: 999px;
+}
+
+.skeletonNotice {
+  padding: 12px 14px;
+  border-radius: 8px;
+  background-color: #f7f8fa;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .skeletonIcon {
