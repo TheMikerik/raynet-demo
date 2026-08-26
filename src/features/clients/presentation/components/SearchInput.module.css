@@ -34,8 +34,8 @@
 
 .input:focus {
   outline: none;
-  border-color: #4e8905;
-  box-shadow: 0 0 0 3px rgba(78, 137, 5, 0.12);
+  border-color: #2d5c9a;
+  box-shadow: 0 0 0 3px rgba(45, 92, 154, 0.12);
 }
 
 .input::placeholder {
