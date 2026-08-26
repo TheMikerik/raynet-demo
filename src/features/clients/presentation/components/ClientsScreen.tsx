@@ -7,6 +7,7 @@ import type { GetClientsResult } from '../../data/client.repository'
 import { SearchInput } from './SearchInput'
 import { ClientTable } from './table/ClientTable'
 import { ClientTablePagination } from './table/ClientTablePagination'
+import { ClientDetailPanel } from './detail/ClientDetailPanel'
 import { DevApiStateToggle } from './DevApiStateToggle'
 import type { DevApiState } from './DevApiStateToggle'
 import styles from './ClientsScreen.module.css'
@@ -24,6 +25,7 @@ export function ClientsScreen() {
   const [pageSize, setPageSize] = useState(10)
   const [devApiState, setDevApiState] = useState<DevApiState>('real')
   const [searchInput, setSearchInput] = useState('')
+  const [selectedClientId, setSelectedClientId] = useState<number | null>(null)
   const debouncedSearchInput = useDebounce(searchInput, SEARCH_DEBOUNCE_MS)
   const searchQuery =
     debouncedSearchInput.trim().length >= MIN_SEARCH_LENGTH ? debouncedSearchInput.trim() : ''
@@ -62,12 +64,19 @@ export function ClientsScreen() {
           <h1 className={styles.title}>Master-Detail klientů</h1>
           <SearchInput value={searchInput} onChange={setSearchInput} />
         </div>
-        <ClientTable
-          data={displayedQuery.data?.items ?? []}
-          isLoading={displayedQuery.isLoading}
-          errorMessage={errorMessage}
-          onRetry={errorMessage ? handleRetry : undefined}
-        />
+        <div className={styles.body}>
+          <div className={styles.master}>
+            <ClientTable
+              data={displayedQuery.data?.items ?? []}
+              isLoading={displayedQuery.isLoading}
+              errorMessage={errorMessage}
+              onRetry={errorMessage ? handleRetry : undefined}
+              activeId={selectedClientId}
+              onRowClick={setSelectedClientId}
+            />
+          </div>
+          <ClientDetailPanel clientId={selectedClientId} />
+        </div>
         <ClientTablePagination
           totalCount={displayedQuery.data?.totalCount ?? 0}
           pageSize={pageSize}
