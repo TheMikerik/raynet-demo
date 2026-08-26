@@ -1,13 +1,18 @@
 import { useMemo, useState } from 'react'
 import { AppSidebar } from '../../../../shared/components/AppSidebar'
+import { useDebounce } from '../../../../shared/hooks/useDebounce'
 import { getRaynetErrorInfo } from '../../../../services/raynet/errors'
 import { useClients } from '../hooks/useClients'
 import type { GetClientsResult } from '../../data/client.repository'
+import { SearchInput } from './SearchInput'
 import { ClientTable } from './table/ClientTable'
 import { ClientTablePagination } from './table/ClientTablePagination'
 import { DevApiStateToggle } from './DevApiStateToggle'
 import type { DevApiState } from './DevApiStateToggle'
 import styles from './ClientsScreen.module.css'
+
+const MIN_SEARCH_LENGTH = 3
+const SEARCH_DEBOUNCE_MS = 600
 
 interface AsyncQueryResult<T> {
   isLoading: boolean
@@ -18,7 +23,11 @@ interface AsyncQueryResult<T> {
 export function ClientsScreen() {
   const [pageSize, setPageSize] = useState(10)
   const [devApiState, setDevApiState] = useState<DevApiState>('real')
-  const clientsQuery = useClients('', pageSize)
+  const [searchInput, setSearchInput] = useState('')
+  const debouncedSearchInput = useDebounce(searchInput, SEARCH_DEBOUNCE_MS)
+  const searchQuery =
+    debouncedSearchInput.trim().length >= MIN_SEARCH_LENGTH ? debouncedSearchInput.trim() : ''
+  const clientsQuery = useClients(searchQuery, pageSize)
 
   const displayedQuery = useMemo<AsyncQueryResult<GetClientsResult>>(() => {
     switch (devApiState) {
@@ -49,7 +58,10 @@ export function ClientsScreen() {
     <div className={styles.screen}>
       <AppSidebar />
       <main className={styles.content}>
-        <h1>Raynet — Master-Detail klientů</h1>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Master-Detail klientů</h1>
+          <SearchInput value={searchInput} onChange={setSearchInput} />
+        </div>
         <ClientTable
           data={displayedQuery.data?.items ?? []}
           isLoading={displayedQuery.isLoading}
