@@ -5,6 +5,7 @@ const ROLE_LABELS: Record<string, string> = {
   B_PARTNER: 'Partner',
   C_SUPPLIER: 'Dodavatel',
   D_RIVAL: 'Konkurent',
+  E_OWN: 'Vlastní firma',
 }
 
 const STATE_LABELS: Record<string, string> = {
