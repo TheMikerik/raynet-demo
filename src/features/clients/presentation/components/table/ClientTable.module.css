@@ -6,7 +6,6 @@
   background-color: #f2f4f6;
   padding-left: 35px;
   padding-right: 30px;
-  padding-top: 12px;
   padding-bottom: 12px;
 }
 
@@ -74,7 +73,7 @@
   border: 1px solid #e1e4e8;
   border-radius: 8px;
   transition: background-color 150ms ease-out;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
 
 .row td {
